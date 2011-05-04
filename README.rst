@@ -90,8 +90,9 @@ configuration file (and vary between 32 and 64 bit)::
 This configuration change (available in ``conf/mrjob-emr-pypy-32bit.conf`` and ``conf/mrjob-emr-pypy-64bit.conf``)
 also makes use of a custom bootstrap script found in ``conf/bootstrap-pypy-32bit.sh`` and ``conf/bootstrap-pypy-64bit.sh``).
 
-I have yet to get through a complete run using PyPy but it may not help significantly with such a simple job (and it may even be a little slower).  I can definitely see it being useful for more complex operations.
-
+A single run of ``follower_histogram.py`` with 8 ``c1.xlarge`` instances took approximately 66 minutes
+using Elastic MapReduce's system Python.  A single run with the same configuration took approximately 44
+minutes.  While not a scientific comparison, that's a pretty impressive speedup for such a simple task.  PyPy should speed things up even more for more complex tasks.
 
 .. _Kwak, Haewoon and Lee, Changhyun and Park, Hosung and Moon, Sue: http://an.kaist.ac.kr/traces/WWW2010.html
 .. _MapReduce: http://en.wikipedia.org/wiki/MapReduce
