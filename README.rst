@@ -12,33 +12,6 @@ for a good excuse to use MapReduce_ and MrJob_ for processing.  MrJob makes
 it easy to test MapReduce jobs locally as well as run them on a local Hadoop_
 cluster or on Amazon's `Elastic MapReduce`_.
 
-Designing MapReduce Jobs
-------------------------
-
-I usually find myself going through the same basic tasks when writing MapReduce
-tasks:
-
-1. Examine the data input format and the data that you have to play with.  This
-   is sometimes explained in a metadata document or you may have to use a utility
-   such as head_ if you're trying to look at the very beginning of a text file.
-2. Create a small amount of synthetic data for use while designing your job.  It
-   should be obvious to determine if the output of your job is correct or not based
-   on this data.  This data is also useful when writing unit tests.
-3. Write your job, using synthetic data as test input.
-4. Create sample data based on your real dataset and continue testing your job with
-   that data.  This can be done via `reservoir sampling`_ to create a more
-   representative sample or it could be as simple as ``head -1000000`` on a
-   very large file.
-5. Run your job against the sample data and make sure the results look sane.
-6. Configure MrJob to run using Elastic MapReduce.  An example configuration can
-   be found in ``conf/mrjob-emr.conf`` but will require you to update it with
-   your credentials and S3 bucket information before it will work.
-7. Run your sample data using Elastic MapReduce and a small number of low-cost
-   instances.  It's a lot cheaper to fix configuration problem when you're just
-   running two cheap instances.
-8. Once you're comfortable with everything, run your job against the full dataset
-   on Elastic MapReduce.
-
 Analyzing the data
 ------------------
 
@@ -119,17 +92,6 @@ also makes use of a custom bootstrap script found in ``conf/bootstrap-pypy-32bit
 
 I have yet to get through a complete run using PyPy but it may not help significantly with such a simple job (and it may even be a little slower).  I can definitely see it being useful for more complex operations.
 
-Thoughts on Elastic MapReduce
------------------------------
-
-It's been great to be able to temporarily rent my own Hadoop cluster for short periods of time, but
-Elastic MapReduce definitely has some downsides.  For starters, the standard way to read and persist data during
-jobs is via S3 instead of HDFS which you would most likely be using if you were running your own Hadoop cluster.
-This means that you spend a lot of time (and money) transferring data between S3 and nodes.  You're not bringing
-the data to computing resources like a dedicated Hadoop cluster running HDFS might.
-
-All in all though it's a great tool for the toolbox, particularly if you don't have the need for a full-time
-Hadoop cluster.
 
 .. _Kwak, Haewoon and Lee, Changhyun and Park, Hosung and Moon, Sue: http://an.kaist.ac.kr/traces/WWW2010.html
 .. _MapReduce: http://en.wikipedia.org/wiki/MapReduce
