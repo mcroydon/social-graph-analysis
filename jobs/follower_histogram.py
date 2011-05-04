@@ -38,7 +38,10 @@ class FollowerHistogram(MRJob):
 
     # Reduce Step 1: Sum the number of followers for each <user_id>
     def sum_followers(self, id, followers):
-        yield id, sum(followers)
+        x = 0
+        for f in followers:
+            x += f
+        yield id, x
 
     # Map Step 2: Increment the number of users who have the given number
     # of followers.
@@ -47,7 +50,10 @@ class FollowerHistogram(MRJob):
 
     # Reduce Step 2: Sum the follower count for each number of followers
     def sum_users_per_follow_count(self, follow_count, users_count):
-        yield follow_count, sum(users_count)
+        x = 0
+        for c in users_count:
+            x += c
+        yield follow_count, x
 
     def steps(self):
         return [self.mr(self.increment_followers, self.sum_followers),
